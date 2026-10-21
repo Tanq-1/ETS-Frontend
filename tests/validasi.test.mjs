@@ -3,9 +3,13 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
+import { execFileSync } from 'node:child_process'
+import { join } from 'node:path'
 
 const require = createRequire(import.meta.url)
-const ts = require('typescript')
+let ts
+try { ts = require('typescript') }
+catch { ts = require(join(execFileSync('npm', ['root', '-g'], { encoding: 'utf8' }).trim(), 'typescript')) }
 const source = readFileSync(new URL('../src/utils/validasi.ts', import.meta.url), 'utf8')
 const output = ts.transpileModule(source, {
   compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext },
@@ -38,4 +42,20 @@ test('validasi peminjaman menangkap pilihan, slot, tanggal, dan jumlah tidak val
   assert.match(cekPeminjaman({ ...peminjaman, jumlah: 3 }, s), /Jumlah/)
   assert.match(cekPeminjaman({ ...peminjaman, jumlah: 1.5 }, s), /Jumlah/)
   assert.equal(cekPeminjaman(peminjaman, s), null)
+})
+
+test('batas panjang 50 karakter dihitung setelah trim, termasuk karakter Unicode', () => {
+  const fifty = 'X'.repeat(50)
+  const fiftyOne = 'X'.repeat(51)
+  assert.equal(cekSumberDaya({ nama: ` ${fifty} `, jenis: 'ruang', stok: 1 }), null)
+  assert.match(cekSumberDaya({ nama: fiftyOne, jenis: 'ruang', stok: 1 }), /maksimal 50/)
+  assert.equal(cekPeminjaman({ ...peminjaman, peminjam: ` ${fifty} ` }, s), null)
+  assert.match(cekPeminjaman({ ...peminjaman, peminjam: fiftyOne }, s), /maksimal 50/)
+})
+
+test('batas slot 1 dan 8, stok tepat maksimum, dan jumlah nol', () => {
+  assert.equal(cekPeminjaman({ ...peminjaman, slot_mulai: 1, slot_selesai: 8, jumlah: 2 }, s), null)
+  assert.match(cekPeminjaman({ ...peminjaman, slot_mulai: 0 }, s), /Slot/)
+  assert.match(cekPeminjaman({ ...peminjaman, slot_selesai: 9 }, s), /Slot/)
+  assert.match(cekPeminjaman({ ...peminjaman, jumlah: 0 }, s), /Jumlah/)
 })

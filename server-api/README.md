@@ -11,7 +11,7 @@ Ganti `A` dengan persona yang kamu undi (A sampai E). Server berjalan di `http:/
 | Opsi | Fungsi |
 |---|---|
 | `--persona A` | **Wajib.** Memilih perilaku dan endpoint tambahan sesuai kartu persona |
-| `--cr A..C` | Dipakai setelah menerima lembar change request (sesuai lembar yang kamu dapat) |
+| `--cr B` | Dipakai setelah menerima lembar change request (sesuai lembar yang kamu dapat) |
 | `--delay 800` | Menunda setiap respons 800 ms, untuk melihat tampilan "Memuat..." |
 | `--port 8081` | Mengganti port (alamat di kodemu harus ikut berubah) |
 

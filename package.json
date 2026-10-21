@@ -8,8 +8,9 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b",
-    "test:api": "node --test tests/api-contract.test.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "test:api": "node --test tests/api-contract.test.mjs tests/cr-b-contract.test.mjs tests/cr-b-http.test.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:frontend": "node --test tests/api-client.test.mjs tests/cr-b-client.test.mjs tests/frontend-contract.test.mjs tests/validasi.test.mjs"
   },
   "dependencies": {
     "react": "^19.1.1",

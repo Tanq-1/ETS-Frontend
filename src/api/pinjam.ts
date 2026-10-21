@@ -4,7 +4,24 @@ import type {
 
 const BASE_URL = 'http://localhost:8080'
 
-interface ApiError { error: string }
+interface ApiError { error?: string; bentrok_dengan?: unknown }
+
+// CR-B hanya memperluas pesan untuk POST /peminjaman dengan 409.
+// Semua respons lain tetap memakai teks error dari server tanpa modifikasi.
+function pesanKesalahan(data: unknown, status: number, path: string, method?: string): string {
+  const body: ApiError | null = data !== null && typeof data === 'object' && !Array.isArray(data)
+    ? data as ApiError : null
+  const original = typeof body?.error === 'string'
+    ? body.error : `Permintaan gagal (${status}).`
+
+  if (status !== 409 || path !== '/peminjaman' || method !== 'POST'
+    || !Array.isArray(body?.bentrok_dengan)) return original
+
+  const ids = body.bentrok_dengan.filter((id): id is number =>
+    typeof id === 'number' && Number.isSafeInteger(id) && id > 0)
+  if (ids.length === 0) return original
+  return `${original}. Bentrok dengan peminjaman ${ids.map((id) => `#${id}`).join(', ')}`
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response
@@ -25,8 +42,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new Error('Gagal membaca respons server.')
   }
   if (!response.ok) {
-    const maybe = data as Partial<ApiError> | null
-    throw new Error(typeof maybe?.error === 'string' ? maybe.error : `Permintaan gagal (${response.status}).`)
+    throw new Error(pesanKesalahan(data, response.status, path, init?.method))
   }
   return data as T
 }

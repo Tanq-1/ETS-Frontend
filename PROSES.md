@@ -41,13 +41,23 @@ Alur data: `klik tombol -> handler komponen -> callback App -> validasi -> fungs
 - Cara menemukan: Perintah pengecekan npm gagal karena `EAI_AGAIN` (DNS/akses jaringan).
 - Penyebab dan solusi: Paket `react`, `vite`, dan dependensinya belum tersedia di lingkungan ini; instal dan jalankan `npm run build` serta uji browser pada mesin dengan akses ke npm. Jangan menandai build berhasil sebelum diperiksa.
 
-## 5. Change request
-Belum ada lembar CR yang diberikan untuk Persona A. Belum ada perubahan CR pada kode dan server tetap dijalankan tanpa `--cr`. Setelah mendapatkan lembar, bagian ini harus diisi dengan perilaku yang diminta, berkas yang berubah, keputusan desain, dan bukti pengujian yang dilakukan.
+## 5. Change Request B — beri tahu peminjaman yang menghalangi
 
-## 6. Pemeriksaan yang dilakukan
-- `node --test tests/api-contract.test.mjs`: 2 tes kontrak API lulus.
-- `tests/api-client.test.mjs`: 1 tes integrasi HTTP dengan kode client `fetch` asli lulus, setelah konflik port awal diperbaiki.
-- `tests/validasi.test.mjs`: 3 tes validator lokal menolak input tidak valid dan menerima input benar.
-- `tsc --noEmit --strict --target es2022 --module esnext --moduleResolution bundler src/types.ts src/utils/validasi.ts`: lulus untuk tipe dan validator yang tidak bergantung React.
-- Semua 10 berkas `.ts/.tsx` diparse oleh TypeScript transpiler: 0 error sintaks.
-- Belum mengklaim `npm run build` dan tes browser lulus sampai paket React/Vite dapat dipasang.
+**Kebutuhan resmi:** Pada **POST `/peminjaman`** yang dibalas 409 karena slot/kapasitas penuh, server dengan `--cr B` memberikan objek `{ "error": "...", "bentrok_dengan": [id, ...] }`. Pesan pada `role="alert"` harus mempertahankan `error` dari server dan menyebut hanya ID di `bentrok_dengan`, masing-masing diawali `#`. Jika daftar kosong/tidak ada, cukup tampilkan `error`. CR-B **tidak mengubah PUT**.
+
+**Keputusan desain pada implementasi:** Penambahan dilakukan di fungsi `pesanKesalahan` dalam `src/api/pinjam.ts`, sebelum pesan error dilempar ke `App`. Dengan demikian komponen tetap menangani semua error melalui satu state `error` yang sama, tanpa membuat state baru untuk daftar penghalang atau mengubah form dan daftar. Formatter diberi guard `status === 409`, `method === 'POST'`, dan `path === '/peminjaman'`, sehingga tidak memodifikasi error lain. Hanya ID numerik bulat positif dari array yang ditampilkan; tidak ada ID yang ditebak lewat pencarian list lokal.
+
+**Alur CR-B:** Klik Simpan peminjaman → `App.simpanBooking` → `src/api/pinjam.ts:tambahPeminjaman` → POST JSON → server mengembalikan 409 `{error, bentrok_dengan}` → `request` mengubahnya menjadi pesan `Error` → `catch` `App.simpanBooking` memanggil `setError` → `<div role="alert">` menampilkan pesan. Karena `setForm` dan `setRevision` hanya dijalankan setelah respons sukses, saat 409 form serta daftar peminjaman tidak dikosongkan/diubah.
+
+**Kendala terkait perubahan:** Semula klien `request` hanya menampilkan properti `error` dan mengabaikan `bentrok_dengan`; hal ini diketahui dari perbandingan source dengan dokumen CR-B, bukan dari klaim adanya bug yang ditemukan pengguna di browser. Penyesuaian dan tes regresi dibuat oleh AI. Tes mencakup dua penghalang, penghalang yang tidak beririsan, field kosong/hilang, respons 400/404, PUT 409 yang tidak berubah, dan penggunaan server HTTP asli dengan `--persona A --cr B`.
+
+## 6. Pemeriksaan yang benar-benar dilakukan oleh asisten
+
+- Checkpoint 1: `npm test` lulus **4** tes dasar F1–F3 (kontrak server dan inspeksi JSX).
+- Checkpoint 2: `npm test` lulus **19** tes, termasuk tes regresi Checkpoint 1, API client, validator dan inspeksi JSX.
+- Checkpoint 3: `npm test` lulus **37** tes otomatis (kontrak API asli dan CR-B, fungsi client dengan mock, integrasi server HTTP asli, validasi, dan kontrak markup statis).
+- `tsc --noEmit --strict --target ES2022 --module ESNext --moduleResolution bundler --lib ES2022,DOM src/types.ts src/api/pinjam.ts src/utils/validasi.ts` lulus untuk kode TypeScript API dan validator yang tidak bergantung pada React.
+- Server asli tetap sama; pengujian CR-B menjalankan server dengan `--persona A --cr B` pada port uji sementara.
+- **Batas verifikasi:** Runtime belum memiliki paket React/Vite dari npm registry karena sebelumnya terjadi kegagalan jaringan `EAI_AGAIN`. Akibatnya `npm run build` penuh dan uji klik interaktif pada browser **belum diverifikasi**. Tes yang memeriksa teks JSX adalah pemeriksaan **statis**, bukan uji DOM. Terdapat panduan pengujian browser di `tests/MANUAL-UI.md`.
+
+**Kendala yang benar-benar terjadi pada proses asistensi AI:** Pengujian HTTP sebelumnya mengalami `EADDRINUSE` saat mengandalkan port 8080, lalu diubah memakai port sementara. Pengambilan paket npm juga gagal karena kendala koneksi DNS (`EAI_AGAIN`); hal ini tidak diubah menjadi klaim bahwa build berhasil. Risiko klik ganda dan konversi nilai DOM dalam bagian 4 merupakan analisis kode, bukan laporan uji browser yang dilakukan pengguna.

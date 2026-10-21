@@ -9,3 +9,11 @@
 - Prompt: Lanjutan dari prompt awal yang sama, pada bagian "lalu lanjut ke checkpoint 2". Saya tidak mengirim prompt implementasi kedua yang terpisah; AI melanjutkan tahap berikutnya sesuai instruksi awal.
 - Dipakai: Pengembangan Checkpoint 1 dengan F4 (validasi serta penanganan error), F5 (penjelasan bentrok HTTP 409 tanpa mereset formulir), F6 (edit PUT dan hapus DELETE), F7 (pencegahan permintaan ganda dan sinkronisasi ulang data), serta papan ketersediaan delapan slot khusus Persona A yang diperbarui setelah peminjaman dibuat, diubah, atau dihapus. Hasilnya terdapat pada src/App.tsx, src/api/pinjam.ts, src/utils/validasi.ts, src/components/PeminjamanForm.tsx, src/components/DaftarPeminjaman.tsx, dan src/components/PapanKetersediaan.tsx. AI juga membuat tests/api-contract.test.mjs, tests/api-client.test.mjs, tests/validasi.test.mjs, serta memperbarui dokumentasi. Server API asli tidak diubah.
 - Diubah: AI-LOG.md dan beberapa file duplikat yang saya kurang ingat dibuat AI atau karena kesalahan saya menyalin
+
+## Checkpoint 3 — Change Request B: daftar peminjaman yang menghalangi
+- Dikirim:"Ini adalah change requestnya. Kamu juga boleh melengkapi semua tests" (disertai dokumen `Lembar CR-B Daftar Penghalang.docx`). Sebelumnya saya juga meminta `AI-LOG.md` menunjukkan bahwa kode hasil AI saya gunakan seluruhnya, bukan seolah-olah saya melakukan koreksi kode sendiri.
+- Dipakai: Penyesuaian `src/api/pinjam.ts` untuk membaca `bentrok_dengan` pada respons 409 dari `POST /peminjaman`, lalu menggabungkan pesan `error` asli dengan ID penghalang yang diawali `#`. Jika field tidak ada atau kosong, pesan tetap seperti semula; PUT tidak berubah. Saya menggunakan juga tes dan dokumentasi yang disusun AI: `tests/cr-b-contract.test.mjs`, `tests/cr-b-client.test.mjs`, `tests/cr-b-http.test.mjs`, `tests/frontend-contract.test.mjs`, `tests/validasi.test.mjs`, `tests/MANUAL-UI.md`, tes regresi F1–F3 di `tests/checkpoint1.test.mjs`, serta pembaruan `PROSES.md`, `README.md`, `README-mahasiswa.md` dan file ini. Server dosen tidak diubah.
+- Diubah: Menghapus beberapa file duplikat
+
+## Catatan
+Seluruh kode dihasilkan AI

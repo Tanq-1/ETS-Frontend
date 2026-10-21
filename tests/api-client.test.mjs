@@ -5,10 +5,14 @@ import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
+import { execFileSync } from 'node:child_process'
+import { join } from 'node:path'
 import net from 'node:net'
 
 const require = createRequire(import.meta.url)
-const ts = require('typescript')
+let ts
+try { ts = require('typescript') }
+catch { ts = require(join(execFileSync('npm', ['root', '-g'], { encoding: 'utf8' }).trim(), 'typescript')) }
 const source = readFileSync(new URL('../src/api/pinjam.ts', import.meta.url), 'utf8')
 async function availablePort() {
   const server = net.createServer()

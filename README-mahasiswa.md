@@ -1,9 +1,9 @@
 # PinjamKampus Frontend
 
-- Nama dan NRP: (isi sendiri)
+- Nama dan NRP: Titan Avery Hamonangan Manurung - 5053241005
 - Persona: A — Petugas gedung
 - Cara menjalankan:
-  1. Terminal 1: `node server-api/server.mjs --persona A`
+  1. Terminal 1: `node server-api/server.mjs --persona A --cr B`
   2. Terminal 2: `npm install` lalu `npm run dev`, kemudian buka alamat yang ditampilkan Vite
   3. Validasi build dengan `npm run build` setelah paket terpasang.
 
@@ -16,9 +16,13 @@
 - [x] F6 Ubah dan hapus
 - [x] F7 Aman klik ganda dan data konsisten
 - [x] Fitur khas persona — papan ketersediaan 8 slot yang diperbarui otomatis
-- [ ] Change request — belum ada lembar resmi, belum diimplementasikan
+- [x] Change Request B — POST 409 menampilkan ID peminjaman penghalang dari `bentrok_dengan`
+
+## Tes
+- `npm test`: 37 tes otomatis lulus pada lingkungan asisten (regresi F1–F7, Persona A, CR-B, inspeksi JSX).
+- `npm run test:api`: tes kontrak server dan integrasi HTTP CR-B.
+- `npm run test:frontend`: tes fungsi `fetch`, validator, dan inspeksi statis JSX.
+- `tests/MANUAL-UI.md`: panduan pengujian browser sebelum dikumpulkan.
 
 ## Yang belum selesai
-- Change request belum dapat dikerjakan sebelum diketahui lembar CR yang didapat (A/B/C) beserta kontrak tampilannya.
-- `npm install`, `npm run build`, dan uji manual browser masih perlu dijalankan di mesin dengan paket npm tersedia; lingkungan pembuatan arsip tidak memiliki akses ke registry npm.
-- Nama dan NRP harus diisi sendiri sebelum dikumpulkan.
+Semoga semuanya sudah selesai
