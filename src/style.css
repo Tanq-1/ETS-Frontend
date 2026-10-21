@@ -1,0 +1,30 @@
+:root { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #14283d; background: #f3f6fb; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, select { font: inherit; }
+.container { max-width: 1150px; margin: 0 auto; padding: 28px 22px 64px; }
+header { margin-bottom: 28px; }
+header h1 { font-size: 2.2rem; margin: 4px 0 7px; }
+header p { color: #586c80; margin: 0; }
+.eyebrow { text-transform: uppercase; font-size: .75rem; font-weight: 700; letter-spacing: .12em; }
+.columns { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px; }
+.panel { background: white; border: 1px solid #e0e8f2; border-radius: 14px; padding: 24px; box-shadow: 0 4px 16px #24395409; margin-bottom: 20px; }
+h2 { font-size: 1.12rem; margin: 0 0 20px; }
+h3 { font-size: 1rem; }
+.form-grid { display: grid; grid-template-columns: 150px minmax(0,1fr); align-items: center; gap: 12px 15px; }
+.form-grid label, .filters label { color: #34475c; font-weight: 600; font-size: .9rem; }
+input, select { border: 1px solid #c7d2df; border-radius: 7px; padding: 9px 12px; background: white; color: #162f47; min-width: 0; }
+input:focus, select:focus { outline: 2px solid #8cb2db; outline-offset: 1px; }
+button { color: #fff; border: 0; border-radius: 8px; padding: 9px 15px; background: #165c9a; font-weight: 650; cursor: pointer; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.form-grid button { grid-column: 1 / -1; justify-self: start; margin-top: 4px; }
+.filters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+.filters > div { display: grid; gap: 7px; }
+.item-list { list-style: none; padding: 0; margin: 0; }
+.item-list li { border-top: 1px solid #e7ebf0; padding: 14px 0; line-height: 1.6; }
+.item-list li:first-child { border-top: 0; }
+.actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.actions button { background: #e8f1fa; color: #134d81; }
+.alert { padding: 14px 18px; border: 1px solid #f4b7b7; background: #fff0f1; color: #992e39; border-radius: 10px; margin-bottom: 20px; }
+.detail-box { background: #f2f6fb; border-radius: 9px; padding: 12px 16px; margin-top: 20px; }
+@media (max-width: 850px) { .columns { grid-template-columns: 1fr; } .filters { grid-template-columns: 1fr; } .form-grid { grid-template-columns: 1fr; gap: 7px; } .form-grid button { grid-column: auto; } }
