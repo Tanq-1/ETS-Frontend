@@ -3,4 +3,9 @@
 ## Checkpoint 1 — Implementasi F1–F3
 - Prompt: "Saya adalah persona A dan saya sudah memberikan current server-api. Kerjakan hingga ckeckpoint 1 dulu lalu lanjut ke checkpoint 2 dan terakhir perubahan. Ubah AI-LOG.md, PROSES.md, README.md, dan README-mahasiswa.md dengan mengikuti format masing-masing file dan sesuai kebutuhan soal dengan mengikuti requirements"
 - Dipakai: Implementasi awal project React + TypeScript + Vite untuk F1 (form dan daftar sumber daya), F2 (form membuat peminjaman), dan F3 (filter serta detail peminjaman). Kode yang digunakan meliputi `src/App.tsx`, `src/api/pinjam.ts`, `src/types.ts`, `src/utils/validasi.ts`, `src/components/SumberDayaForm.tsx`, `src/components/PeminjamanForm.tsx`, `src/components/FilterPeminjaman.tsx`, `src/components/DaftarPeminjaman.tsx`, dan berkas pendukung project. AI juga menyusun dokumentasi checkpoint. Server API yang diberikan tetap digunakan tanpa perubahan.
-- Diubah atau diperbaiki oleh saya: -
+- Diubah: -
+
+## Checkpoint 2 — Implementasi F4–F7 dan fitur Persona A
+- Prompt: Lanjutan dari prompt awal yang sama, pada bagian "lalu lanjut ke checkpoint 2". Saya tidak mengirim prompt implementasi kedua yang terpisah; AI melanjutkan tahap berikutnya sesuai instruksi awal.
+- Dipakai: Pengembangan Checkpoint 1 dengan F4 (validasi serta penanganan error), F5 (penjelasan bentrok HTTP 409 tanpa mereset formulir), F6 (edit PUT dan hapus DELETE), F7 (pencegahan permintaan ganda dan sinkronisasi ulang data), serta papan ketersediaan delapan slot khusus Persona A yang diperbarui setelah peminjaman dibuat, diubah, atau dihapus. Hasilnya terdapat pada src/App.tsx, src/api/pinjam.ts, src/utils/validasi.ts, src/components/PeminjamanForm.tsx, src/components/DaftarPeminjaman.tsx, dan src/components/PapanKetersediaan.tsx. AI juga membuat tests/api-contract.test.mjs, tests/api-client.test.mjs, tests/validasi.test.mjs, serta memperbarui dokumentasi. Server API asli tidak diubah.
+- Diubah: AI-LOG.md dan beberapa file duplikat yang saya kurang ingat dibuat AI atau karena kesalahan saya menyalin

@@ -3,14 +3,14 @@
 Server tiruan layanan peminjaman ruang dan alat kampus. Tanpa instalasi; hanya butuh **Node.js 18 atau lebih baru** (`node --version`).
 
 ```bash
-node server-api/server.mjs --persona C
+node server-api/server.mjs --persona A
 ```
 
-Ganti `C` dengan persona yang kamu undi (A sampai E). Server berjalan di `http://localhost:8080`.
+Ganti `A` dengan persona yang kamu undi (A sampai E). Server berjalan di `http://localhost:8080`.
 
 | Opsi | Fungsi |
 |---|---|
-| `--persona A..E` | **Wajib.** Memilih perilaku dan endpoint tambahan sesuai kartu persona |
+| `--persona A` | **Wajib.** Memilih perilaku dan endpoint tambahan sesuai kartu persona |
 | `--cr A..C` | Dipakai setelah menerima lembar change request (sesuai lembar yang kamu dapat) |
 | `--delay 800` | Menunda setiap respons 800 ms, untuk melihat tampilan "Memuat..." |
 | `--port 8081` | Mengganti port (alamat di kodemu harus ikut berubah) |
@@ -22,3 +22,6 @@ Catatan:
 - Setiap permintaan dicatat di terminal server beserta kode statusnya; berguna untuk melihat apa yang sebenarnya dikirim aplikasimu.
 - Kesalahan selalu berbentuk `{"error": "pesan"}` dengan status 400, 404, atau 409.
 - Jangan mengubah `api-core.mjs`. Yang dinilai adalah aplikasi React kamu, dan pengujian memakai versi aslinya.
+
+## Dokumentasi aplikasi frontend
+File `README.md`, `README-mahasiswa.md`, `PROSES.md`, dan `AI-LOG.md` yang telah diisi untuk Persona A berada di **root project**, satu folder dengan `package.json`. Template awal dari paket server dipindahkan dan dilengkapi di lokasi tersebut agar tidak ada dua salinan bukti proses yang berbeda.
