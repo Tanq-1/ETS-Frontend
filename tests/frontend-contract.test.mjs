@@ -3,7 +3,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync, readdirSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { join, resolve, relative, sep } from 'node:path'
 import { createRequire } from 'node:module'
 import { execFileSync } from 'node:child_process'
 
@@ -86,7 +86,7 @@ test('Ketentuan teknis: fetch hanya dalam src/api dan tidak ada tipe any atau li
   assert.equal(files.length >= 8, true)
   for (const f of files) {
     const src = readFileSync(f, 'utf8')
-    if (!f.includes(`${join(root, 'api')}/`))
+    if (relative(root, f).split(sep)[0] !== 'api')
       assert.doesNotMatch(src, /\bfetch\s*\(/, `fetch di luar src/api: ${f}`)
     assert.doesNotMatch(src, /window\.(alert|confirm|prompt)\s*\(/)
     const ast = ts.createSourceFile(f, src, ts.ScriptTarget.Latest, true, f.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS)
